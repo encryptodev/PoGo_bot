@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "discord.js": "^14.24.2",
+    "dotenv": "^17.2.3",
+    "qrcode": "^1.5.4"
+  },
+  "name": "pogo_bot",
+  "description": "A collection of useful automation tools for Pokemon Go communities, can be implemented as discord bot.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/encryptodev/PoGo_bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/encryptodev/PoGo_bot/issues"
+  },
+  "homepage": "https://github.com/encryptodev/PoGo_bot#readme"
+}
