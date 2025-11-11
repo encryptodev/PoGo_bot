@@ -11,7 +11,7 @@ const client = new Client({
   ]
 });
 
-client.once("ready", () => console.log(`Logged in as ${client.user.tag}`));
+client.once("clientReady", () => console.log(`Logged in as ${client.user.tag}`));
 
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
