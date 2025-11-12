@@ -69,6 +69,7 @@ async function generateQRBuffer(code) {
 
 client.on("messageCreate", async (message) => {
   try {
+    console.log(`[MSG] ${message.guild?.name ?? "DM"} #${message.channel?.name ?? "-"}: ${message.content}`);
     if (message.author.bot) return;
     if (!message.guild) return; // ignore DMs
 
@@ -105,7 +106,7 @@ client.on("interactionCreate", async (interaction) => {
     const raw = interaction.options.getString("code") ?? "";
     const code = raw.replace(/\D/g, "");
     if (!/^\d{12}$/.test(code)) {
-      await interaction.reply({ content: "Please provide a **12-digit** friend code.", ephemeral: true });
+      await interaction.reply({ content: "Please provide a **12-digit** friend code.", flags: InteractionResponseFlags.Ephemeral });
       return;
     }
     try {
@@ -114,7 +115,7 @@ client.on("interactionCreate", async (interaction) => {
       await interaction.reply({ content: `Here’s the QR for \`${code}\`.`, files: [file] });
     } catch (e) {
       console.error(e);
-      await interaction.reply({ content: "Sorry, I couldn’t generate that QR.", ephemeral: true });
+      await interaction.reply({ content: "Sorry, I couldn’t generate that QR.", flags: InteractionResponseFlags.Ephemeral });
     }
     return;
   }
@@ -124,20 +125,20 @@ client.on("interactionCreate", async (interaction) => {
     // Admins or Manage Guild only
     if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild) &&
         !interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-      await interaction.reply({ content: "You need **Manage Server** permission to use this.", ephemeral: true });
+      await interaction.reply({ content: "You need **Manage Server** permission to use this.", flags: InteractionResponseFlags.Ephemeral });
       return;
     }
 
     const ch = interaction.options.getChannel("channel", true);
     if (![ChannelType.GuildText, ChannelType.GuildAnnouncement].includes(ch.type)) {
-      await interaction.reply({ content: "Please choose a text or announcement channel.", ephemeral: true });
+      await interaction.reply({ content: "Please choose a text or announcement channel.", flags: InteractionResponseFlags.Ephemeral });
       return;
     }
 
     store[interaction.guild.id] = { channelId: ch.id };
     saveStore(store);
 
-    await interaction.reply({ content: `✅ Friend-code auto-detection set to <#${ch.id}> for this server.`, ephemeral: true });
+    await interaction.reply({ content: `✅ Friend-code auto-detection set to <#${ch.id}> for this server.`, flags: InteractionResponseFlags.Ephemeral });
     return;
   }
 
@@ -145,14 +146,14 @@ client.on("interactionCreate", async (interaction) => {
   if (interaction.commandName === "clearchannel") {
     if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild) &&
         !interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
-      await interaction.reply({ content: "You need **Manage Server** permission to use this.", ephemeral: true });
+      await interaction.reply({ content: "You need **Manage Server** permission to use this.", flags: InteractionResponseFlags.Ephemeral });
       return;
     }
 
     delete store[interaction.guild.id];
     saveStore(store);
 
-    await interaction.reply({ content: "✅ Cleared. The bot will detect friend codes **in any channel**.", ephemeral: true });
+    await interaction.reply({ content: "✅ Cleared. The bot will detect friend codes **in any channel**.", flags: InteractionResponseFlags.Ephemeral });
     return;
   }
 });
